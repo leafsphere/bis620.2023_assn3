@@ -17,7 +17,7 @@ Imports:
   purrr,
   tidyr,
   forcats,
-  duckdb,
+  shiny,
   DBI,
   DT,
   devtools,
