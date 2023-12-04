@@ -9,6 +9,9 @@
 [![test-coverage](https://github.com/leafsphere/bis620.2023_assn3/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/leafsphere/bis620.2023_assn3/actions/workflows/test-coverage.yaml)
 <!-- badges: end -->
 
+[Test
+Coverage](https://github.com/leafsphere/bis620.2023_assn3/actions/workflows/test-coverage.yaml)
+
 The goal of `bis620.2023` is to provide a user-friendly interface that
 allows the viewer to explore a large database of clinical studies.
 Inside lies an R Shiny app that serves as an interactive dashboard,
@@ -19,7 +22,7 @@ countries were involved, and what conditions were examined.
 
 ## Installation
 
-You can install the development version of bis620.2023_assn3 from
+You can install the development version of bis620.2023 from
 [GitHub](https://github.com/) with:
 
 ``` r
@@ -27,9 +30,10 @@ You can install the development version of bis620.2023_assn3 from
 devtools::install_github("leafsphere/bis620.2023_assn3")
 ```
 
-## Example
+## Examples
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to plot the first 100 points
+of accelerometry data:
 
 ``` r
 library(bis620.2023)
