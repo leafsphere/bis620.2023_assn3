@@ -39,7 +39,28 @@ devtools::install_github("leafsphere/bis620.2023_assn3")
 
 ## Examples
 
+You can see the top conditions examined in the studies as such:
+
+```{r}
+library(bis620.2023)
+data(studies)
+data(conditions)
+create_conditions_histogram(studies, conditions)
+```
+
+You can also see a list of the top countries involved in the studies:
+
+```{r}
+create_topcountries_table(studies, countries) |> head(10)
+```
+
+
 Here are some screenshots of what you can do on the Shiny app:
 
-![](man/figures/endpoint_graph.png)\
+![](man/figures/jointpainphasesplot.png)\
+
+![](man/figures/cancerconditionsexamined.png)\
+
+![](man/figures/parkinsonsstudytypes.png)\
+
 
