@@ -13,6 +13,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+[Test Coverage](https://github.com/leafsphere/bis620.2023_assn3/actions/workflows/test-coverage.yaml)
+
 # bis620.2023
 
 <!-- badges: start -->
