@@ -36,7 +36,4 @@ devtools::install_github("leafsphere/bis620.2023_assn3")
 
 Here are some screenshots of what you can do on the Shiny app:
 
-<figure>
-<img src="man/figures/endpoint_graph.png" alt="Endpoints Histogram" />
-<figcaption aria-hidden="true">Endpoints Histogram</figcaption>
-</figure>
+![](man/figures/endpoint_graph.png)  

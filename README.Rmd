@@ -41,5 +41,5 @@ devtools::install_github("leafsphere/bis620.2023_assn3")
 
 Here are some screenshots of what you can do on the Shiny app:
 
-![](man/figures/endpoint_graph.png)
+![](man/figures/endpoint_graph.png)\
 

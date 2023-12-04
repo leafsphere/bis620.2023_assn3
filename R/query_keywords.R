@@ -15,11 +15,8 @@
 #' @importFrom stringr str_detect 
 #' @export
 query_kwds <- function(tbl, kwds, column, ignore_case = TRUE, match_all = FALSE) {
-  query <- paste(
-    kwds,
-    collapse = ifelse(match_all, "&", "|")
-  )
-  
-  tbl |>
-    filter(grepl(query, column, ignore.case = ignore_case))
+  if (!match_all) {
+    tbl |>
+      filter(grepl(paste0(kwds, collapse = "|"), column, ignore.case = ignore_case))
+  }
 }
