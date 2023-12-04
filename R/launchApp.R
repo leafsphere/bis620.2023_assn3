@@ -2,7 +2,6 @@
 #' @description 
 #' Starts Shiny app that allows user to query ctrialsgov database and see
 #' relevant histograms and tables
-#' @param con the connection to the ctrialsgov duckdb file
 #' @importFrom utils head
 #' @importFrom dplyr filter tbl collect
 #' @importFrom shiny shinyApp fluidPage titlePanel sidebarLayout sidebarPanel
