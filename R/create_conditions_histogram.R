@@ -5,9 +5,9 @@
 #' @param d the dataframe of the query result
 #' @param conditions the handle referencing the "conditions" database table
 #' @return ggplot object that shows histogram of the examined conditions distribution
-#' @importFrom dplyr select left_join mutate group_by summarize arrange
+#' @importFrom dplyr select left_join mutate group_by summarize arrange n
 #' @importFrom forcats fct_lump_n
-#' @importFrom ggplot2 ggplot geom_col scale_y_log10 labs theme_bw theme margin
+#' @importFrom ggplot2 ggplot geom_col scale_y_log10 labs theme_bw theme element_text
 #' @export
 create_conditions_histogram = function(d, conditions) {
   em = d |>

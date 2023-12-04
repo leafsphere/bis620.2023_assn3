@@ -59,7 +59,7 @@ launchApp <- function() {
             strsplit(",") |>
             unlist() |>
             trimws()
-          ret = query_kwds(studies, si, "brief_title", match_all = TRUE)
+          ret = query_kwds(studies, si, "brief_title", match_all = T)
         } else {
           ret = studies
         }

@@ -18,5 +18,13 @@ query_kwds <- function(tbl, kwds, column, ignore_case = TRUE, match_all = FALSE)
   if (!match_all) {
     tbl |>
       filter(grepl(paste0(kwds, collapse = "|"), !!as.symbol(column), ignore.case = ignore_case))
+  } else {
+    # matches only if all words are found in column
+    matches <- sapply(kwds, grepl, x = tbl[[column]], ignore.case = ignore_case) |>
+      apply(FUN=all, MARGIN=1)
+    tbl[matches,]
   }
 }
+  
+
+
