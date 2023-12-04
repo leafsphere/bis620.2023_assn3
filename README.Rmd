@@ -25,16 +25,17 @@ The goal of `bis620.2023` is to provide a user-friendly interface that allows th
 
 ## Installation
 
-You can install the development version of bis620.2023_assn3 from [GitHub](https://github.com/) with:
+You can install the development version of bis620.2023 from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("leafsphere/bis620.2023_assn3")
 ```
 
-## Example
+## Examples
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to plot the first 100 points of
+accelerometry data:
 
 ```{r example}
 library(bis620.2023)
@@ -42,4 +43,5 @@ accel |>
   head(100) |> 
   plot_accel()
 ```
+
 

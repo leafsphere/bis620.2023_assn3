@@ -19,6 +19,7 @@ Imports:
   forcats,
   duckdb,
   DBI,
+  DT,
   devtools,
   stringr
 Suggests: 
