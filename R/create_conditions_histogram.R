@@ -7,7 +7,7 @@
 #' @return ggplot object that shows histogram of the examined conditions distribution
 #' @importFrom dplyr select left_join mutate group_by summarize arrange
 #' @importFrom forcats fct_lump_n
-#' @importFrom ggplot2 ggplot geom_col scale_y_log10 labs theme_bw theme
+#' @importFrom ggplot2 ggplot geom_col scale_y_log10 labs theme_bw theme margin
 #' @export
 create_conditions_histogram = function(d, conditions) {
   em = d |>
