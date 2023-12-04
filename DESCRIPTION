@@ -18,9 +18,7 @@ Imports:
   tidyr,
   forcats,
   shiny,
-  DBI,
   DT,
-  devtools,
   stringr
 Suggests: 
     knitr,

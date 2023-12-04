@@ -4,7 +4,7 @@
 #' relevant histograms and tables
 #' @importFrom utils head
 #' @importFrom dplyr filter tbl collect
-#' @importFrom shiny shinyApp fluidPage titlePanel sidebarLayout sidebarPanel
+#' @importFrom shiny shinyApp fluidPage titlePanel sidebarLayout sidebarPanel reactive
 #' textInput selectInput mainPanel tabsetPanel tabPanel plotOutput renderPlot h3
 #' @importFrom DT dataTableOutput renderDataTable
 #' @export

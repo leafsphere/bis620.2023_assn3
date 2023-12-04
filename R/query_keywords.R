@@ -15,16 +15,11 @@
 #' @importFrom stringr str_detect 
 #' @export
 query_kwds <- function(tbl, kwds, column, ignore_case = TRUE, match_all = FALSE) {
-  if (ignore_case) {
-    like <- " ilike "
-  } else{
-    like <- " like "
-  }
   query <- paste(
     kwds,
     collapse = ifelse(match_all, "&", "|")
   )
   
   tbl |>
-    filter(str_detect(column, query))
+    filter(grepl(query, column, ignore.case = ignore_case))
 }

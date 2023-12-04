@@ -6,9 +6,6 @@
 \usage{
 launchApp()
 }
-\arguments{
-\item{con}{the connection to the ctrialsgov duckdb file}
-}
 \description{
 Starts Shiny app that allows user to query ctrialsgov database and see
 relevant histograms and tables
