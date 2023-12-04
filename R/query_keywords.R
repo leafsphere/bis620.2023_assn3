@@ -17,6 +17,6 @@
 query_kwds <- function(tbl, kwds, column, ignore_case = TRUE, match_all = FALSE) {
   if (!match_all) {
     tbl |>
-      filter(grepl(paste0(kwds, collapse = "|"), column, ignore.case = ignore_case))
+      filter(grepl(paste0(kwds, collapse = "|"), !!as.symbol(column), ignore.case = ignore_case))
   }
 }

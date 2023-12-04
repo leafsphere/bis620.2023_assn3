@@ -104,6 +104,13 @@ launchApp <- function() {
           collect() |>
           create_topcountries_table(countries)
       })
+      
+      output$trial_table = renderDataTable({
+        get_studies() |>
+          select(nct_id, brief_title, start_date, completion_date) |>
+          rename(`NCT ID` = nct_id, `Brief Title` = brief_title,
+                 `Start Date` = start_date, `Completion Date` = completion_date)
+      })
 
     }
   
