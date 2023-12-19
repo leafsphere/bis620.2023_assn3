@@ -1,4 +1,4 @@
-#' Wildfire Hazard Risk Data
+#' ClimateCheck Wildfire Hazard Risk Ratings
 #'
 #' @format ## `risk`
 #' A data frame with 3,108 rows and 7 columns.
@@ -11,4 +11,5 @@
 #'   \item{state}{State name}
 #'   \item{cc_fire_rating}{Wildfire risk}
 #' }
+#' @source <https://climatecheck.com>
 "risk"

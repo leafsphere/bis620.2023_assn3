@@ -3,7 +3,7 @@
 \docType{data}
 \name{risk}
 \alias{risk}
-\title{Wildfire Hazard Risk Data}
+\title{ClimateCheck Wildfire Hazard Risk Ratings}
 \format{
 \subsection{\code{risk}}{
 
@@ -19,10 +19,13 @@ A data frame with 3,108 rows and 7 columns.
 }
 }
 }
+\source{
+\url{https://climatecheck.com}
+}
 \usage{
 risk
 }
 \description{
-Wildfire Hazard Risk Data
+ClimateCheck Wildfire Hazard Risk Ratings
 }
 \keyword{datasets}
