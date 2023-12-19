@@ -14,7 +14,6 @@ knitr::opts_chunk$set(
 ```
 
 
-
 # bis620.2023
 
 <!-- badges: start -->
@@ -24,8 +23,11 @@ knitr::opts_chunk$set(
 
 The goal of `bis620.2023` is to provide a user-friendly interface that allows the viewer to explore a large database of clinical studies. Inside lies an R Shiny app that serves as an interactive dashboard, allowing the user to query trials based on their keyword(s) of interest and subsequently shows relevant data visualizations and tables pertaining to the results, such as what phases the studies were in, what countries were involved, and what conditions were examined. 
 
+A final write-up that analyzes CDC/ATSDR Social Vulnerability Index data and wildfire risk data is included as a vignette and linked in the next section.
+
 ## Links
 
+* [Final Write-up](https://leafsphere.github.io/bis620.2023_assn3/articles/final-writeup.html)
 * [Test Coverage](https://github.com/leafsphere/bis620.2023_assn3/actions/workflows/test-coverage.yaml)
 
 ## Installation

@@ -17,8 +17,14 @@ and subsequently shows relevant data visualizations and tables
 pertaining to the results, such as what phases the studies were in, what
 countries were involved, and what conditions were examined.
 
+A final write-up that analyzes CDC/ATSDR Social Vulnerability Index data
+and wildfire risk data is included as a vignette and linked in the next
+section.
+
 ## Links
 
+- [Final
+  Write-up](https://leafsphere.github.io/bis620.2023_assn3/articles/final-writeup.html)
 - [Test
   Coverage](https://github.com/leafsphere/bis620.2023_assn3/actions/workflows/test-coverage.yaml)
 
