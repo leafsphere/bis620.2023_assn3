@@ -14,3 +14,9 @@ usethis::use_data(countries, overwrite = TRUE)
 
 endpoints = readRDS("endpoints.rds")
 usethis::use_data(endpoints, overwrite = TRUE)
+
+risk = readRDS("risk.rds")
+usethis::use_data(risk, overwrite = TRUE)
+
+ca.svi = readRDS("ca.svi.rds")
+usethis::use_data(ca.svi, overwrite = TRUE)

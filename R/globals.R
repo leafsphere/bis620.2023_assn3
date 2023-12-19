@@ -1,4 +1,4 @@
-utils::globalVariables(c("X", "Y", "Z", "Acceleration",
+utils::globalVariables(c("X", "Y", "Z", "Acceleration", "ca.svi", "risk",
                          "n", "newphase", "nct_id", "name",
                          "desc", "conditionsordered", "endpoint_met", 
                          "study_type", "removed", "Count", 
