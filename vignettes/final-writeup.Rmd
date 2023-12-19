@@ -1,0 +1,239 @@
+---
+title: "Final Write-up"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Final Write-up}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(
+  fig.align = "center",
+  fig.width = 6,
+  fig.height = 4,
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, message=FALSE, warning=FALSE}
+library(bis620.2023)
+library(ggplot2)
+library(dplyr)
+```
+
+## Introduction
+
+### Background and Motivation
+
+Social vulnerability describes factors that may weaken a community's ability to prepare for and respond to widescale hazardous events, such as natural disasters, disease outbreaks, and chemical spills. The CDC/ATSDR Social Vulnerability Index (SVI) is a dataset compiled by the CDC/ATSDR that uses 16 U.S. census variables examining external stresses on human health and their potential detrimental effects within census tracts across the United States. It is important to narrow down possible stressors and identify communities that are the most vulnerable in order to prevent human suffering and provide support to those that need it most in times of disaster.
+
+The natural disaster that this paper examines is wildfires. The wildfire risk rating data used in the analysis are sourced from ClimateCheck and based on three factors: (i) the probability of burning, (ii) the severity of a fire, and (iii) the projected risk on days with the worst conditions for fire spread.
+
+### Research Question
+
+The objective of this paper is to identify variables in the SVI that have the strongest correlation with wildfire risk for counties in California, a state that went through lots of burning between 2017-2022 and has the highest risk of wildfires in ths United States.
+
+## Methods
+
+### Data Pre-processing and Variable Selection
+
+For the purposes of minimizing space usage, data on states other than California were already filtered out from the 2018 SVI dataset; shapefile/geometry columns were also dropped. 
+
+First, we do some data pre-processing. Missing information are encoded as `-999`s in the SVI, so we convert them to `NA`s:
+
+```{r}
+data(ca.svi)
+svi <- ca.svi %>%
+  mutate_if(is.numeric, ~ ifelse(.x == -999, NA, .x))
+svi
+```
+
+The SVI data are collected by census tracts, whereas the hazard risk data are collected by counties:
+
+```{r}
+data(risk)
+risk
+```
+
+In order to preserve information through the merge, I will be picking a subset of the SVI columns that can be used in calculating the percentage data, which will be accomplished through dividing the total affected count (`E_` starting variables) by the total unit count in each region (as seen in the data dictionary calculation descriptions). I also will be keeping the column that sums the flags (`F_TOTAL`) of four different themes. All SVI variables of interest are summarized below, as described by the data dictionary:
+
+| variable name | description |
+| :------------ | :---------- |
+| `E_TOTPOP`    | Population estimate, 2014-2018 ACS |
+| `E_AGE17`     | People aged 17 and younger estimate, 2014-2018 ACS |
+| `E_GROUPQ`    |	People in group quarters estimate, 2014-2018 ACS |
+| `E_HH`        |	Households estimate, 2014-2018 ACS |
+| `E_HU`        |	Housing units estimate, 2014-2018 ACS |
+| `E_MINRTY`    |	Minority (all persons except white, non-Hispanic) estimate, 2014-2018 ACS |
+| `E_MUNIT`     |	Housing in structures with 10 or more units estimate, 2014-2018 ACS |
+| `E_SNGPNT`    |	Single parent household with children under 18 estimate, 2014-2018 ACS |
+| `F_TOTAL`	    | Sum of flags for four themes: Socioeconomic Status, Household Composition, Minority Status/Language, and Housing Type/Transportation |
+
+```{r}
+svi <- svi %>%
+  select(STCNTY, E_TOTPOP, E_AGE17, E_GROUPQ, E_HH, E_HU, E_MINRTY, E_MUNIT, E_SNGPNT, F_TOTAL)
+svi
+```
+
+After getting the appropriate variables, we calculated the corresponding estimated percentages
+for each county by grouping by the county and performing the following operations within `summarize`:
+
+```{r}
+cty.svi <- svi %>%
+  group_by(STCNTY) %>%
+  summarize(
+    E_TOTPOP  = sum(E_TOTPOP, na.rm=T),
+    EP_AGE17  = sum(E_AGE17,  na.rm=T) / sum(E_TOTPOP, na.rm=T) * 100,
+    EP_GROUPQ = sum(E_GROUPQ, na.rm=T) / sum(E_TOTPOP, na.rm=T) * 100,
+    EP_MINRTY = sum(E_MINRTY, na.rm=T) / sum(E_TOTPOP, na.rm=T) * 100,
+    EP_MUNIT  = sum(E_MUNIT,  na.rm=T) / sum(E_HU, na.rm=T) * 100,
+    EP_SNGPNT = sum(E_SNGPNT, na.rm=T) / sum(E_HH, na.rm=T) * 100,
+    F_TOTAL   = sum(F_TOTAL,  na.rm=T)
+  )
+cty.svi
+```
+
+Finally, we can merge the CDC/ATSDR SVI and wildfire risk data together:
+
+```{r}
+d <- risk %>%
+  select(GEOID, County_name, state, cc_fire_rating) %>%
+  inner_join(cty.svi, by=c("GEOID" = "STCNTY"))
+d
+```
+
+
+## Analysis
+
+For each of the 6 aggregated SVI variables, I will be visualizing the SVI variable on the $x$-axis
+and the wildfire risk on the $y$-axis. The following function was created to aid in visualization:
+
+```{r}
+myplot <- function(varname, ...) {
+  d %>%
+  ggplot(aes(x = !!as.symbol(varname), y = cc_fire_rating, size = E_TOTPOP)) +
+  geom_point(...) +
+  labs(title = paste0("California: Wildfire Risk vs. ", varname)) +
+  theme_minimal()
+}
+```
+
+### Percentage of people aged 17 and younger estimate, 2014-2018 ACS
+
+```{r}
+myplot("EP_AGE17", color = "#ea5c00")
+```
+
+```{r}
+cor(d$EP_AGE17, d$cc_fire_rating)
+```
+
+There is a very weak correlation of 0.051 between `EP_AGE17` and `cc_fire_rating`. The percentages range from 13 to 31%. There seems to be an outlier for the county with the lowest fire rating value and the lowest `E_AGE17` value, and we find out this is San Francisco County:
+
+```{r}
+d %>% arrange(EP_AGE17) %>% select(1:4, EP_AGE17) %>% head(1)
+```
+
+### Percentage of people in group quarters estimate, 2014-2018 ACS
+
+```{r}
+myplot("EP_GROUPQ", color = "#e29e00")
+```
+
+```{r}
+cor(d$EP_GROUPQ, d$cc_fire_rating)
+```
+
+There is a very weak correlation of 0.123 between `EP_GROUPQ` and `cc_fire_rating`. The percentages range from 0 to 32%. There seems a few outliers, most particularly would be the one with the highest `EP_GROUPQ` value, and we find out this is Lassen County:
+
+```{r}
+d %>% arrange(desc(EP_GROUPQ)) %>% select(1:4, EP_GROUPQ) %>%  head(1)
+```
+
+### Percentage minority (non-White, non-Hispanic) estimate, 2014-2018 ACS
+
+```{r}
+myplot("EP_MINRTY", color = "#e8c520")
+```
+
+```{r}
+cor(d$EP_MINRTY, d$cc_fire_rating)
+```
+
+There is a moderate negative correlation of -0.415 between `EP_MINRTY` and `cc_fire_rating`. The percentages range from 12 to 89%. The county with the highest `EP_MINRTY` value turns out to be Imperial County:
+
+```{r}
+d %>% arrange(desc(EP_MINRTY)) %>% select(1:4, EP_MINRTY) %>%  head(1)
+```
+
+### Percentage of housing in structures with $\geq$ 10 units estimate
+
+```{r}
+myplot("EP_MUNIT", color = "#9ebe91")
+```
+
+```{r}
+cor(d$EP_MUNIT, d$cc_fire_rating)
+```
+
+There is a moderately strong negative correlation of -0.783 between `EP_MUNIT` and `cc_fire_rating`. The percentages range from 1 to 36%. The county with the highest `EP_MINRTY` value turns out to be San Francisco County:
+
+```{r}
+d %>% arrange(desc(EP_MUNIT)) %>% select(1:4, EP_MUNIT) %>%  head(1)
+```
+
+```{r}
+min(d$EP_MUNIT)
+max(d$EP_MUNIT)
+```
+
+### Percentage of single parent households with children under 18 estimate, 2014-2018 ACS
+
+```{r}
+myplot("EP_SNGPNT", color = "#71b3c2")
+```
+
+```{r}
+cor(d$EP_SNGPNT, d$cc_fire_rating)
+```
+
+There is a weak correlation of 0.166 between `EP_SNGPNT` and `cc_fire_rating`. The percentages range from 4 to 15%. The county with the lowest `EP_SNGPNT` value turns out to be San Francisco County:
+
+```{r}
+d %>% arrange(EP_SNGPNT) %>% select(1:4, EP_SNGPNT) %>%  head(1)
+```
+
+### Sum of flags for four themes: Socioeconomic Status, Household Composition, Minority Status/Language, and Housing Type/Transportation
+
+```{r}
+myplot("F_TOTAL", color = "#3c9ab2") +
+  scale_x_log10()
+```
+
+All but one of the `F_TOTAL` values are between 1 and 1000. The county with the highest `F_TOTAL` value turns out to be Los Angeles County:
+
+```{r}
+d %>% arrange(desc(F_TOTAL)) %>% select(1:4, F_TOTAL) %>%  head(1)
+```
+
+which makes sense, given that it is the most populous county in California:
+
+```{r}
+d %>% arrange(desc(E_TOTPOP)) %>% select(1:4, E_TOTPOP) %>% head(5)
+```
+
+
+## Conclusion
+
+The six variables that were visualized in the previous section had varying correlations with wildfire risk. The variable that had the strongest correlation with wildfire risk was `EP_MUNI`, which is the percentage of housing in structures with $\geq$ 10 units estimate. 
+
+From the size of the points in the scatterplots, it is clear that the counties most at risk of wildfire hazards in California tended to be smaller in population count. Moreover, smaller communities may fewer resources and funding allocated towards preparing for hazards and disasters. It's likely that communities at higher risk of wildfire that also rank higher on social vulnerability variables may struggle more in times of dire calamity.
+
+An interesting variable to look at in the future would be how worried people are about disasters and comparing this worry index to the disaster risk rating of their community (e.g., county). A possible indicator of disaster vulnerability could be a big disparity between objective disaster risk and perceived risk, in which communities are not as worried as they "should" be regarding disaster risk. Comparing perceived risk against variables in the SVI may help be beneficial in informing officials of areas that need more awareness and funding to best help communities protect themselves against hazardous events.
+
+## Sources
+
+* [CDC/ATSDR Social Vulnerability Index](https://www.atsdr.cdc.gov/placeandhealth/svi/index.html)
+* [ClimateCheck](https://climatecheck.com/)
