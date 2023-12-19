@@ -4,7 +4,8 @@ Title: BIS 620 Homework 3
 Version: 0.1.0
 Author: Julie Ye
 Maintainer: The package maintainer <julie.ye@yale.ediu>
-Description: Homework 3 - integrating R Shiny app functionality into package
+Description: Integrated R Shiny app functionality into a package. 
+  Performed analysis on Social Vulnerability Index from 2018.
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
@@ -18,8 +19,7 @@ Imports:
   tidyr,
   forcats,
   shiny,
-  DT,
-  stringr
+  DT
 Suggests: 
     knitr,
     rmarkdown,
